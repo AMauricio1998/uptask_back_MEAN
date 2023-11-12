@@ -179,6 +179,7 @@ const buscarColaborador = async (req, res) => {
     res.json(usuario);
 };
 
+
 export {
     obtenerProyectos,
     obtenerProyecto,
