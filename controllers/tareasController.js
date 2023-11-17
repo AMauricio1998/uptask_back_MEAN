@@ -3,9 +3,7 @@ import Tarea from "../models/Tarea.js";
 
 const agregarTarea = async (req, res) => {
     const { proyecto } = req.body;
-  
     const existeProyecto = await Proyecto.findById(proyecto);
-  
     if (!existeProyecto) {
       const error = new Error("El Proyecto no existe");
       return res.status(404).json({ msg: error.message });
