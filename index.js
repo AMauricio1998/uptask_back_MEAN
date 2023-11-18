@@ -14,13 +14,20 @@ dotenv.config();
 
 conectarDB();
 
+//Configurar cors
+const whiteList = [process.env.FRONTEND_URL];
 const corsOptions = {
-    origin: 'http://localhost:5173',
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    credentials: true,
-    optionsSuccessStatus: 204,
-}
-app.use(cors());
+    origin: function(origin, callback) {
+        if (whiteList.includes(origin)) {
+            //Puede consultar la api
+            callback(null, true);
+        } else {
+            callback(new Error("Error de Cors"))
+        }
+    }
+};
+
+app.use(cors(corsOptions));
 
 // Routing
 app.use("/api/usuarios", usuariosRoutes);

@@ -2,6 +2,7 @@ import Usuario from "../models/Usuario.js";
 import generarId from "../helpers/generarId.js";
 import generarJWT from "../helpers/generarJWT.js";
 import { emailOlvidePassword } from "../helpers/email.js";
+import { emailRegistro } from "../helpers/email.js";
 
 const registrar = async (req, res, next) => {
 
@@ -15,9 +16,16 @@ const registrar = async (req, res, next) => {
     try {
         const usuario = new Usuario(req.body);
         usuario.token = generarId();
-        const usuarioAlmacenado = await usuario.save();
+        await usuario.save();
+
+        //Enviar email de confirmacion
+        emailRegistro({
+          email: usuario.email,
+          nombre: usuario.nombre,
+          token: usuario.token
+        })
         
-        res.json(usuarioAlmacenado);
+        res.json({msg: "Usuario Creado Correctamente, Revisa tu Email para confirmar tu cuenta"});
     } catch (error) {
         console.log(error);
     }
@@ -108,7 +116,8 @@ const comprobarToken = async (req, res) => {
     const error = new Error("Token no válido");
     return res.status(404).json({ msg: error.message });
   }
-};
+}; 
+
 
 const nuevoPassword = async (req, res) => {
   const { token } = req.params;
