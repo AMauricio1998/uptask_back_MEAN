@@ -20,7 +20,7 @@ router
 router
     .route("/:id")
     .get(checkAuth, obtenerProyecto)
-    .get(checkAuth, editarProyecto)
+    .put(checkAuth, editarProyecto)
     .get(checkAuth, eliminarProyecto);
 
 router.get("/agregar-colaborador/:id", checkAuth, agregarColaborador);
